@@ -4,7 +4,6 @@
   <script src="bower_components/jQuery/dist/jquery.min.js"></script>
   <script src="bower_components/d3/d3.min.js"></script>
   <script type="text/javascript" src="main.js"></script>
-  <link rel=stylesheet type="text/css" href="style.css"/>
 <style>
 body {
     margin: 10px;
@@ -27,7 +26,7 @@ h4 {
   stroke: #000;
 }
 </style>
-    
+
 </head>
 <body>
 <h4 id="hovered"></h4>
@@ -48,31 +47,7 @@ h4 {
   </div>
 </div>
 <script>
-// d3.csv("car.csv", function(d) {
-//   return {
-//     name: d.name,
-//     mpg: d.mpg,
-//     cylinders: d.cylinders,
-//     displacement: d.displacement,
-//     horsepower: d.horsepower,
-//     weight: d.weight,
-//     acceleration: d.acceleration,
-//     modelyear: d.model.year,
-//     origin: d.origin
-//   };
-// }, function(error, rows) {
-//   console.log(rows);
-// });
-function addListeners() {
-  $('#update').on('click',function(){
-    var newMin = +$('.ui') option.val();
-    var newMax = +$('#mpg-max') option.val();
-    var newX = +$('#sel-x').val();
-    var newY = +$('#sel-y').val();
-    console.log(newMin, newMax);
-    console.log(newX);
-  });
-};
+
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -103,9 +78,8 @@ d3.csv("car.csv", function(error, data) {
   if (error) throw error;
   var headerNames = d3.keys(data[0]);
   data.forEach(function(d) {
-    d.mpg = +d.mpg;
-    d.displacement = +d.displacement;
-  });
+    });
+  console.log(data);
 
   xrange.domain(d3.extent(data, function(d) { return d.mpg; })).nice();
   yrange.domain(d3.extent(data, function(d) { return d.displacement; })).nice();
@@ -131,25 +105,15 @@ d3.csv("car.csv", function(error, data) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("displacement")
-   // svg.selectAll(".dot")
-   //    .data(data)
-   //  .enter().append("circle")
-   //    .attr("class", "dot")
-   //    .attr("r", 3.5)
-   //    .attr("cx", function(d) { return x(d.mpg); })
-   //    .attr("cy", function(d) { return y(d.displacement); })
-   //    .style("fill", 00000);
-var circle = svg.selectAll("circle")
-  .data(data);
 
-circle.exit().remove();
-
-circle.enter().append("circle")
-.attr("r",2.5);
-
-circle
-  .attr("cx", function(d) { return d.mpg; })
-  .attr("cy", function(d) { return d.displacement; }); 
+ svg.selectAll(".dot")
+    .data(data)
+  .enter().append("circle")
+    .attr("class", "dot")
+    .attr("r", 3.5)
+    .attr("cx", function(d) { return xrange(d.mpg); })
+    .attr("cy", function(d) { return yrange(d.displacement); })
+    .style("fill", 00000);
 
 $(document).ready(function(){
   var select = $('#sel-x');
@@ -162,7 +126,6 @@ $(document).ready(function(){
   }
 })
 $(document).ready(function(){
-  addListeners();
   var select = $('#sel-y');
   for (var i = 1; i < headerNames.length-1; i++) {
     var attribute = headerNames[i];
@@ -176,4 +139,3 @@ $(document).ready(function(){
 </script>
 </body>
 </html>
-
